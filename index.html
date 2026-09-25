@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🎃 Halloween Subscriber Battle</title>
+<meta name="description" content="A friendly YouTube subscriber race from September 25 at 7 PM to Halloween.">
+<style>
+:root{--bg:#100b18;--card:#1b1227;--card2:#241633;--text:#fff7ff;--muted:#cdbbd7;--pink:#ff72c8;--orange:#ff9b45;--green:#76e39d;--line:#3c284b}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at top,#2b1239 0,#100b18 48%);color:var(--text);min-height:100vh}
+.wrap{max-width:1050px;margin:auto;padding:22px}.hero{text-align:center;padding:28px 0 18px}.pumpkin{font-size:58px}.hero h1{font-size:clamp(32px,7vw,60px);margin:4px 0;background:linear-gradient(90deg,var(--orange),var(--pink));-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:17px}
+.card{background:rgba(27,18,39,.92);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 12px 40px #0005;margin:16px 0}.countdown{text-align:center}.timer{font-size:clamp(30px,7vw,54px);font-weight:800;letter-spacing:1px}.small{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.player{position:relative;overflow:hidden}.player:first-child{border-color:#ff9b45}.player:nth-child(2){border-color:#ff72c8}.tag{display:inline-block;padding:5px 9px;border-radius:99px;background:#ffffff12;color:var(--muted);font-size:12px}.name{font-size:24px;font-weight:800;margin:10px 0 2px}.subs{font-size:48px;font-weight:900;margin:8px 0}.gain{font-size:17px;color:var(--green)}.bar{height:12px;background:#ffffff12;border-radius:99px;overflow:hidden;margin-top:15px}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--pink));transition:width .4s}.leader{text-align:center;font-size:20px;font-weight:800}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:200px}input,button{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);font:inherit}input{background:#100b18;color:white}button{background:linear-gradient(90deg,var(--orange),var(--pink));border:0;color:#170b19;font-weight:800;cursor:pointer}button.secondary{background:#ffffff10;color:white;border:1px solid var(--line)}details summary{cursor:pointer;font-weight:800}.status{margin-top:10px;color:var(--muted)}.error{color:#ff9a9a}.foot{text-align:center;color:var(--muted);padding:20px}.links a{color:#ff9fcb}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.subs{font-size:42px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero"><div class="pumpkin">🎃</div><h1>Halloween Subscriber Battle</h1><p>Two channels. One friendly race. May the best content win. 👻</p></section>
+<section class="card countdown"><div class="small">BATTLE TIMER</div><div id="timer" class="timer">Loading…</div><div id="timerLabel" class="small"></div></section>
+<section class="grid">
+ <article class="card player"><span class="tag">TEAM 1</span><div id="name1" class="name">Team 1</div><div id="sub1" class="subs">—</div><div id="gain1" class="gain">Starting: —</div><div class="bar"><div id="bar1" class="fill"></div></div><p><a id="link1" class="links" target="_blank" rel="noopener">YouTube channel</a></p></article>
+ <article class="card player"><span class="tag">TEAM 2</span><div id="name2" class="name">Team 2</div><div id="sub2" class="subs">—</div><div id="gain2" class="gain">Starting: —</div><div class="bar"><div id="bar2" class="fill"></div></div><p><a id="link2" class="links" target="_blank" rel="noopener">YouTube channel</a></p></article>
+</section>
+<section class="card"><div id="leader" class="leader">Add your channels below to start tracking.</div><div id="updated" class="status">Not connected.</div></section>
+<section class="card">
+<details open><summary>⚙️ Battle setup</summary>
+<p class="small">This page uses the official YouTube Data API. Your API key is saved only in this browser. For a public GitHub Pages site, use a Google API key restricted to your site's domain.</p>
+<div class="row">
+<input id="key" type="password" placeholder="YouTube Data API key">
+<input id="c1" placeholder="Team 1 channel URL or @handle">
+<input id="c2" placeholder="Team 2 channel URL or @handle">
+</div>
+<div class="row" style="margin-top:10px"><button id="save">Save & start tracking</button><button class="secondary" id="clear">Clear saved settings</button></div>
+<div id="setupStatus" class="status"></div>
+</details>
+</section>
+<section class="card">
+<details><summary>📜 Rules</summary>
+<ul class="small"><li>Starts September 25, 2026 at 7:00 PM local time.</li><li>Ends October 31, 2026 at 11:59 PM local time.</li><li>No buying subscribers, bots, or fake engagement.</li><li>Keep the battle friendly and follow YouTube's rules.</li><li>The site tracks the subscriber totals returned by YouTube; YouTube may display abbreviated/rounded subscriber counts for some channels.</li></ul>
+</details>
+</section>
+<div class="foot">🎃 Built for a friendly Halloween challenge • Auto-refreshes about every minute</div>
+</div>
+<script>
+const START=new Date('2026-09-25T19:00:00');
+const END=new Date('2026-10-31T23:59:59');
+const $=id=>document.getElementById(id);
+const fmt=n=>n==null?'—':Number(n).toLocaleString();
+let state=JSON.parse(localStorage.getItem('halloweenBattle')||'null')||{};
+
+function parseChannel(v){
+ v=(v||'').trim();
+ if(!v)return '';
+ const m=v.match(/youtube\.com\/(?:channel\/|c\/|user\/)?(@[A-Za-z0-9._-]+|UC[A-Za-z0-9_-]{20,})/i);
+ if(m)return m[1];
+ return v;
+}
+function saveState(){localStorage.setItem('halloweenBattle',JSON.stringify(state))}
+function renderTimer(){
+ const now=new Date(); let d,label;
+ if(now<START){d=START-now;label='Battle starts September 25 at 7:00 PM';}
+ else if(now<END){d=END-now;label='Time remaining until Halloween';}
+ else {d=0;label='The battle is over! Final totals are shown above.'}
+ const s=Math.max(0,Math.floor(d/1000)),days=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),sec=s%60;
+ $('timer').textContent=(days?days+'d ':'')+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+ $('timerLabel').textContent=label;
+}
+async function api(url){const r=await fetch(url);const j=await r.json();if(!r.ok||j.error)throw new Error(j.error?.message||'YouTube API error');return j}
+async function getChannel(key,handle){
+ let q=handle;
+ let url='https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&key='+encodeURIComponent(key);
+ if(handle.startsWith('UC'))url+='&id='+encodeURIComponent(handle);else url+='&forHandle='+encodeURIComponent(handle.replace(/^@/,'')); 
+ const j=await api(url); if(!j.items?.length)throw new Error('Channel not found: '+handle);
+ return j.items[0];
+}
+async function refresh(){
+ const key=state.key, c1=state.c1,c2=state.c2;if(!key||!c1||!c2){return}
+ try{
+  const [a,b]=await Promise.all([getChannel(key,c1),getChannel(key,c2)]);
+  const now=new Date();
+  if(now>=START){
+   if(state.start1==null)state.start1=Number(a.statistics.subscriberCount||0);
+   if(state.start2==null)state.start2=Number(b.statistics.subscriberCount||0);
+   state.startAt=state.startAt||now.toISOString();saveState();
+  }
+  draw(a,b);
+  $('updated').textContent='Last updated: '+now.toLocaleTimeString();
+  $('setupStatus').textContent='Tracking is live. Refreshes every 60 seconds.';
+ }catch(e){$('setupStatus').innerHTML='<span class="error">'+e.message+'</span>'}
+}
+function draw(a,b){
+ const arr=[a,b];arr.forEach((x,i)=>{const n=i+1,s=Number(x.statistics.subscriberCount||0),start=state['start'+n];$('name'+n).textContent=x.snippet.title;$('sub'+n).textContent=fmt(s)+' subscribers';$('gain'+n).textContent='Since start: '+(start==null?'—':((s-start>=0?'+':'')+fmt(s-start)));$('link'+n).href='https://www.youtube.com/channel/'+x.id});
+ if(state.start1!=null&&state.start2!=null){
+  const g1=Number(a.statistics.subscriberCount)-state.start1,g2=Number(b.statistics.subscriberCount)-state.start2,max=Math.max(1,g1,g2);
+  $('bar1').style.width=Math.max(0,g1)/max*100+'%';$('bar2').style.width=Math.max(0,g2)/max*100+'%';
+  $('leader').textContent=g1===g2?'🤝 It’s tied! Both teams have gained '+fmt(g1)+' subscribers.':(g1>g2?'🔥 Team 1 is ahead by '+fmt(g1-g2)+' subscribers!':'🔥 Team 2 is ahead by '+fmt(g2-g1)+' subscribers!');
+ }
+}
+$('save').onclick=()=>{state={...state,key:$('key').value.trim(),c1:parseChannel($('c1').value),c2:parseChannel($('c2').value),start1:state.start1,start2:state.start2};saveState();refresh()};
+$('clear').onclick=()=>{localStorage.removeItem('halloweenBattle');location.reload()};
+if(state.key){$('key').value=state.key;$('c1').value=state.c1||'';$('c2').value=state.c2||'';refresh()}
+renderTimer();setInterval(renderTimer,1000);setInterval(refresh,60000);
+</script>
+</body></html>
