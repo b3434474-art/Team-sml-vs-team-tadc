@@ -12,6 +12,8 @@
 .card{background:rgba(27,18,39,.92);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 12px 40px #0005;margin:16px 0}.countdown{text-align:center}.timer{font-size:clamp(30px,7vw,54px);font-weight:800;letter-spacing:1px}.small{color:var(--muted);font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.player{position:relative;overflow:hidden}.player:first-child{border-color:#ff9b45}.player:nth-child(2){border-color:#ff72c8}.tag{display:inline-block;padding:5px 9px;border-radius:99px;background:#ffffff12;color:var(--muted);font-size:12px}.name{font-size:24px;font-weight:800;margin:10px 0 2px}.subs{font-size:48px;font-weight:900;margin:8px 0}.gain{font-size:17px;color:var(--green)}.bar{height:12px;background:#ffffff12;border-radius:99px;overflow:hidden;margin-top:15px}.fill{height:100%;width:0;background:linear-gradient(90deg,var(--orange),var(--pink));transition:width .4s}.leader{text-align:center;font-size:20px;font-weight:800}.status{margin-top:10px;color:var(--muted)}.error{color:#ff9a9a}.foot{text-align:center;color:var(--muted);padding:20px}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.subs{font-size:42px}}
+
+.sectionTitle{font-size:24px;font-weight:800;margin-bottom:14px}.contentGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contentItem{background:#ffffff08;border:1px solid var(--line);border-radius:16px;overflow:hidden}.contentItem img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}.contentBody{padding:12px}.contentTeam{font-size:12px;color:var(--muted);text-transform:uppercase}.contentTitle{font-weight:750;margin:5px 0 8px;line-height:1.25}.contentDate{font-size:12px;color:var(--muted)}.contentItem a{color:inherit;text-decoration:none}@media(max-width:700px){.contentGrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -21,6 +23,11 @@
 <section class="grid">
  <article class="card player"><span class="tag">TEAM 1</span><div id="name1" class="name">Loading…</div><div id="sub1" class="subs">—</div><div id="gain1" class="gain">Since start: —</div><div class="bar"><div id="bar1" class="fill"></div></div><p><a id="link1" class="links" target="_blank" rel="noopener">YouTube channel</a></p></article>
  <article class="card player"><span class="tag">TEAM 2</span><div id="name2" class="name">Loading…</div><div id="sub2" class="subs">—</div><div id="gain2" class="gain">Since start: —</div><div class="bar"><div id="bar2" class="fill"></div></div><p><a id="link2" class="links" target="_blank" rel="noopener">YouTube channel</a></p></article>
+</section>
+<section class="card">
+  <div class="sectionTitle">🎬 Latest videos & Shorts</div>
+  <div id="content" class="contentGrid"><div class="small">Loading latest uploads…</div></div>
+  <div class="small" style="margin-top:12px">New public uploads are picked up automatically.</div>
 </section>
 <section class="card"><div id="leader" class="leader">Connecting to the live scoreboard…</div><div id="updated" class="status">Loading…</div></section>
 <section class="card"><div class="small">🔒 Private setup • Subscriber counts are fetched securely through the battle server. API keys and channel handles are never stored in this public page.</div></section>
@@ -81,6 +88,16 @@ function draw(j){
   $('leader').textContent='🔥 '+lead.name+' is ahead by '+fmt(diff)+' subscribers!';
  }
 }
-renderTimer();refresh();setInterval(renderTimer,1000);setInterval(refresh,60000);
+
+async function loadContent(){
+ try{
+  const r=await fetch(SCOREBOARD,{cache:'no-store'}); const j=await r.json();
+  if(!r.ok||!j.ok||!Array.isArray(j.content)) throw new Error('Content unavailable');
+  const items=j.content.slice(0,8);
+  $('content').innerHTML=items.length?items.map(x=>'<article class="contentItem"><a href="'+x.url+'" target="_blank" rel="noopener"><img loading="lazy" src="'+x.thumbnail+'" alt=""><div class="contentBody"><div class="contentTeam">'+x.team+' • '+x.type+'</div><div class="contentTitle">'+escapeHtml(x.title)+'</div><div class="contentDate">'+new Date(x.publishedAt).toLocaleDateString()+'</div></div></a></article>').join(''):'<div class="small">No public uploads found yet.</div>';
+ }catch(e){ $('content').innerHTML='<div class="small error">Latest uploads are temporarily unavailable.</div>'; }
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+renderTimer();refresh();loadContent();setInterval(renderTimer,1000);setInterval(refresh,60000);setInterval(loadContent,300000);
 </script>
 </body></html>
