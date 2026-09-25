@@ -93,7 +93,7 @@ async function loadContent(){
  try{
   const r=await fetch(SCOREBOARD,{cache:'no-store'}); const j=await r.json();
   if(!r.ok||!j.ok||!Array.isArray(j.content)) throw new Error('Content unavailable');
-  const items=j.content.slice(0,8);
+  const items=j.content.slice(0,4);
   $('content').innerHTML=items.length?items.map(x=>'<article class="contentItem"><a href="'+x.url+'" target="_blank" rel="noopener"><img loading="lazy" src="'+x.thumbnail+'" alt=""><div class="contentBody"><div class="contentTeam">'+x.team+' • '+x.type+'</div><div class="contentTitle">'+escapeHtml(x.title)+'</div><div class="contentDate">'+new Date(x.publishedAt).toLocaleDateString()+'</div></div></a></article>').join(''):'<div class="small">No public uploads found yet.</div>';
  }catch(e){ $('content').innerHTML='<div class="small error">Latest uploads are temporarily unavailable.</div>'; }
 }
