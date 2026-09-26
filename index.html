@@ -29,33 +29,18 @@
 .chartBar{min-width:2px;border-radius:4px;background:linear-gradient(90deg,var(--orange),var(--pink))}
 .history{display:grid;gap:7px;max-height:330px;overflow:auto}
 .historyRow{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:9px 10px;background:#ffffff08;border-radius:10px;font-size:12px}
-.historyRow strong{font-size:13px}.stats20{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.statWide{grid-column:span 2}.statValueSmall{font-size:18px;font-weight:800;margin-top:5px;line-height:1.25}.statThumb{width:56px;height:32px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-right:7px}@media(max-width:900px){.stats20{grid-template-columns:repeat(2,minmax(0,1fr))}.statWide{grid-column:span 2}}@media(max-width:600px){.stats20{grid-template-columns:1fr}.statWide{grid-column:span 1}}
+.historyRow strong{font-size:13px}
 @media(max-width:900px){.statGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.statGrid{grid-template-columns:1fr 1fr}.chartRow{grid-template-columns:58px 1fr 35px}}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.subs{font-size:42px}}
 
 .sectionTitle{font-size:24px;font-weight:800;margin-bottom:14px}.contentGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contentItem{background:#ffffff08;border:1px solid var(--line);border-radius:16px;overflow:hidden}.contentItem img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}.contentBody{padding:12px}.contentTeam{font-size:12px;color:var(--muted);text-transform:uppercase}.contentTitle{font-weight:750;margin:5px 0 8px;line-height:1.25}.contentDate{font-size:12px;color:var(--muted)}.contentItem a{color:inherit;text-decoration:none}@media(max-width:700px){.contentGrid{grid-template-columns:1fr}}
-
-body.light{--bg:#fff7fb;--card:#ffffffee;--text:#25172b;--muted:#6b5b70;--line:#ead7e9;background:radial-gradient(circle at top,#ffe7c9 0,#fff7fb 52%)}
-body.spooky:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(circle,#ffffff55 1px,transparent 1px);background-size:34px 34px;animation:drift 12s linear infinite;z-index:0}
-body>*{position:relative;z-index:1}@keyframes drift{to{background-position:68px 68px}}
-.navbar{position:sticky;top:8px;z-index:20;display:flex;gap:7px;flex-wrap:wrap;padding:9px;background:#160d20dd;border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(12px)}
-.navbtn,.controlBtn,.filterBtn{border:1px solid var(--line);background:#ffffff0d;color:var(--text);padding:9px 12px;border-radius:11px;cursor:pointer;font-weight:750}
-.navbtn.active,.filterBtn.active{background:linear-gradient(90deg,#ff9b45,#ff72c8);color:#180d20;border-color:transparent}
-.countdownHalloween{text-align:center}.halloweenTimer{font-size:clamp(28px,7vw,50px);font-weight:900}.decorRow{display:flex;justify-content:space-around;font-size:30px;animation:bob 2.5s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-7px)}}
-.contentTools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}.searchBox{flex:1;min-width:180px;background:#ffffff08;border:1px solid var(--line);color:var(--text);padding:10px 12px;border-radius:11px}.contentMeta{font-size:12px;color:var(--muted);margin-top:7px}.contentGrid.big{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:900px){.contentGrid.big{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.contentGrid.big{grid-template-columns:1fr}}
-.page{display:none}.page.active{display:block}.toast{position:fixed;right:18px;bottom:18px;z-index:100;padding:12px 15px;border-radius:13px;background:#21122c;color:#fff;border:1px solid var(--line);box-shadow:0 10px 30px #0006}
-.spookyLoad{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:#100817f2;font-size:30px;font-weight:900;transition:opacity .4s}.spookyLoad.hide{opacity:0;pointer-events:none}
-.particle{position:fixed;pointer-events:none;z-index:2;font-size:18px;animation:fall linear forwards}@keyframes fall{from{transform:translateY(-30px) rotate(0)}to{transform:translateY(105vh) rotate(360deg);opacity:.1}}
-.confetti{position:fixed;z-index:110;top:40%;left:50%;font-size:24px;animation:pop 1.3s ease-out forwards}@keyframes pop{to{transform:translate(var(--x),var(--y)) rotate(720deg);opacity:0}}
-.fullscreen{position:fixed!important;inset:10px!important;z-index:80!important;overflow:auto!important;margin:0!important}.timeline{display:grid;gap:10px}.timelineItem{padding:12px;border-left:3px solid var(--pink);background:#ffffff08;border-radius:0 12px 12px 0}
 </style>
 </head>
 <body>
-<div class="wrap"><div class="spookyLoad" id="spookyLoad">🎃 Loading the haunted scoreboard…</div><nav class="navbar" aria-label="Battle navigation"><button class="navbtn active" data-page="dashboard">🔥 Dashboard</button><button class="navbtn" data-page="contentPage">🎬 Content</button><button class="navbtn" data-page="shortsPage">📱 Shorts</button><button class="navbtn" data-page="videosPage">🎥 Videos</button><button class="navbtn" data-page="timelinePage">📜 Timeline</button><button class="navbtn" data-page="teamsPage">👑 Teams</button><button class="navbtn" data-page="statsPage">📊 Statistics</button><button class="navbtn" data-page="faqPage">❓ FAQ</button><button class="navbtn" data-page="aboutPage">ℹ️ About</button><button class="navbtn" data-page="rulesPage">📜 Rules</button><button class="controlBtn" id="themeBtn">🌙 Theme</button><button class="controlBtn" id="soundBtn">🔇 Spooky sounds</button><button class="controlBtn" id="shareBtn">🔗 Share</button><button class="controlBtn" id="copyBtn">📋 Copy link</button><button class="controlBtn" id="refreshBtn">↻ Refresh</button><button class="controlBtn" id="fullBtn">⛶ Fullscreen</button></nav>
+<div class="wrap">
 <section class="hero"><div class="pumpkin">🎃</div><h1>Halloween Subscriber Battle</h1><p>Two channels. One friendly race. May the best content win. 👻</p></section>
-<section class="card countdownHalloween"><div class="decorRow"><span>🦇</span><span>🎃</span><span>👻</span><span>🕸️</span><span>🎃</span><span>🦇</span></div><div class="statsTitle">🎃 Countdown to Halloween</div><div id="halloweenTimer" class="halloweenTimer">Loading…</div><div id="daysHalloween" class="small">Days until Halloween: —</div><div class="meter"><div id="halloweenFill" class="meterFill"></div></div><div id="spookyMessage" class="status">👻 Getting a spooky battle message…</div></section><main id="dashboard" class="page active"><section class="grid">
+<section class="grid">
  <article class="card player"><span class="tag">TEAM 1</span><div id="name1" class="name">Loading…</div><div id="sub1" class="subs">—</div><div id="gain1" class="gain">Since start: —</div><div class="bar"><div id="bar1" class="fill"></div></div><p><a id="link1" class="links" target="_blank" rel="noopener">YouTube channel</a></p></article>
  <article class="card player"><span class="tag">TEAM 2</span><div id="name2" class="name">Loading…</div><div id="sub2" class="subs">—</div><div id="gain2" class="gain">Since start: —</div><div class="bar"><div id="bar2" class="fill"></div></div><p><a id="link2" class="links" target="_blank" rel="noopener">YouTube channel</a></p></article>
 </section>
@@ -80,39 +65,6 @@ body>*{position:relative;z-index:1}@keyframes drift{to{background-position:68px 
     <div class="stat"><div class="statLabel">Gain per hour</div><div class="statValue" id="perHour">—</div><div class="statSub">TADC • FNAF</div></div>
     <div class="stat"><div class="statLabel">Highest single-day gain</div><div class="statValue" id="highestDay">—</div></div>
     <div class="stat"><div class="statLabel">Highest single-hour gain</div><div class="statValue" id="highestHour">—</div></div>
-  </div>
-</section>
-
-<section class="card">
-  <div class="statsTitle">📊 Channel & Content Stats</div>
-  <div class="small" style="margin-bottom:12px">Live YouTube stats collected automatically. Historical “today” and growth metrics become more accurate as snapshots accumulate.</div>
-  <div class="stats20">
-    <div class="stat"><div class="statLabel">TADC total views</div><div class="statValue" id="tadcViews">—</div></div>
-    <div class="stat"><div class="statLabel">FNAF total views</div><div class="statValue" id="fnafViews">—</div></div>
-    <div class="stat"><div class="statLabel">TADC Shorts uploaded</div><div class="statValue" id="tadcShorts">—</div></div>
-    <div class="stat"><div class="statLabel">FNAF Shorts uploaded</div><div class="statValue" id="fnafShorts">—</div></div>
-    <div class="stat"><div class="statLabel">TADC videos uploaded</div><div class="statValue" id="tadcVideos">—</div></div>
-    <div class="stat"><div class="statLabel">FNAF videos uploaded</div><div class="statValue" id="fnafVideos">—</div></div>
-    <div class="stat"><div class="statLabel">TADC average views/upload</div><div class="statValue" id="tadcAvgViews">—</div></div>
-    <div class="stat"><div class="statLabel">FNAF average views/upload</div><div class="statValue" id="fnafAvgViews">—</div></div>
-    <div class="stat statWide"><div class="statLabel">Most-viewed upload</div><div class="statValueSmall" id="mostViewedUpload">—</div></div>
-    <div class="stat statWide"><div class="statLabel">Most-liked upload</div><div class="statValueSmall" id="mostLikedUpload">—</div></div>
-    <div class="stat statWide"><div class="statLabel">Most recent upload</div><div class="statValueSmall" id="mostRecentUpload">—</div></div>
-    <div class="stat statWide"><div class="statLabel">Fastest-growing upload</div><div class="statValueSmall" id="fastestGrowingUpload">—</div></div>
-    <div class="stat"><div class="statLabel">TADC subscriber-to-view</div><div class="statValue" id="tadcSubView">—</div><div class="statSub">% of views</div></div>
-    <div class="stat"><div class="statLabel">FNAF subscriber-to-view</div><div class="statValue" id="fnafSubView">—</div><div class="statSub">% of views</div></div>
-    <div class="stat"><div class="statLabel">TADC total likes</div><div class="statValue" id="tadcLikes">—</div></div>
-    <div class="stat"><div class="statLabel">FNAF total likes</div><div class="statValue" id="fnafLikes">—</div></div>
-    <div class="stat"><div class="statLabel">TADC total comments</div><div class="statValue" id="tadcComments">—</div></div>
-    <div class="stat"><div class="statLabel">FNAF total comments</div><div class="statValue" id="fnafComments">—</div></div>
-    <div class="stat"><div class="statLabel">Uploads during battle</div><div class="statValue" id="battleUploads">—</div></div>
-    <div class="stat"><div class="statLabel">Average upload frequency</div><div class="statValueSmall" id="uploadFrequency">—</div><div class="statSub">uploads/day • TADC / FNAF</div></div>
-    <div class="stat"><div class="statLabel">Views gained today</div><div class="statValueSmall" id="viewsToday">—</div><div class="statSub">TADC / FNAF</div></div>
-    <div class="stat"><div class="statLabel">Likes gained today</div><div class="statValueSmall" id="likesToday">—</div><div class="statSub">TADC / FNAF</div></div>
-    <div class="stat"><div class="statLabel">Comments gained today</div><div class="statValueSmall" id="commentsToday">—</div><div class="statSub">TADC / FNAF</div></div>
-    <div class="stat"><div class="statLabel">Subscribers gained today</div><div class="statValueSmall" id="subsToday">—</div><div class="statSub">TADC / FNAF</div></div>
-    <div class="stat"><div class="statLabel">Views per subscriber</div><div class="statValueSmall" id="viewsPerSub">—</div><div class="statSub">TADC / FNAF</div></div>
-    <div class="stat statWide"><div class="statLabel">Growth history graph</div><div id="growthGraph" class="chart"><div class="small">Collecting snapshots…</div></div></div>
   </div>
 </section>
 <section class="card">
@@ -197,33 +149,6 @@ function draw(j){
  $('perHour').textContent=fmtRate(b.subscribersPerHour?.team1)+' / '+fmtRate(b.subscribersPerHour?.team2);
  $('highestDay').textContent=fmt(b.highestSingleDayGain);
  $('highestHour').textContent=fmt(b.highestSingleHourGain);
- const s=j.stats||{};
- $('tadcViews').textContent=fmt(s.totalViews?.team1);
- $('fnafViews').textContent=fmt(s.totalViews?.team2);
- $('tadcShorts').textContent=fmt(s.shortsUploaded?.team1);
- $('fnafShorts').textContent=fmt(s.shortsUploaded?.team2);
- $('tadcVideos').textContent=fmt(s.videosUploaded?.team1);
- $('fnafVideos').textContent=fmt(s.videosUploaded?.team2);
- $('tadcAvgViews').textContent=fmt(s.averageViewsPerUpload?.team1);
- $('fnafAvgViews').textContent=fmt(s.averageViewsPerUpload?.team2);
- $('tadcSubView').textContent=Number(s.subscriberToViewRatio?.team1||0).toFixed(4)+'%';
- $('fnafSubView').textContent=Number(s.subscriberToViewRatio?.team2||0).toFixed(4)+'%';
- $('tadcLikes').textContent=fmt(s.totalLikes?.team1);
- $('fnafLikes').textContent=fmt(s.totalLikes?.team2);
- $('tadcComments').textContent=fmt(s.totalComments?.team1);
- $('fnafComments').textContent=fmt(s.totalComments?.team2);
- $('battleUploads').textContent=fmt(s.totalUploadsDuringBattle);
- $('uploadFrequency').textContent=fmtRate(s.averageUploadFrequency?.team1)+' / '+fmtRate(s.averageUploadFrequency?.team2);
- $('viewsToday').textContent=fmt(s.viewsGainedToday?.team1)+' / '+fmt(s.viewsGainedToday?.team2);
- $('likesToday').textContent=fmt(s.likesGainedToday?.team1)+' / '+fmt(s.likesGainedToday?.team2);
- $('commentsToday').textContent=fmt(s.commentsGainedToday?.team1)+' / '+fmt(s.commentsGainedToday?.team2);
- $('subsToday').textContent=fmt(s.subscribersGainedToday?.team1)+' / '+fmt(s.subscribersGainedToday?.team2);
- $('viewsPerSub').textContent=fmtRate(s.viewsPerSubscriber?.team1)+' / '+fmtRate(s.viewsPerSubscriber?.team2);
- renderUploadStat('mostViewedUpload',s.mostViewedUpload,'views');
- renderUploadStat('mostLikedUpload',s.mostLikedUpload,'likes');
- renderUploadStat('mostRecentUpload',s.mostRecentUpload,'');
- renderUploadStat('fastestGrowingUpload',s.fastestGrowingUpload,'growthPerHour');
- renderGrowth(s.growthHistory||[]);
  $('progressText').textContent=Number(b.progressPercent||0).toFixed(1)+'%';
  $('progressFill').style.width=Math.min(100,Math.max(0,Number(b.progressPercent||0)))+'%';
  renderDaily(j.dailyHistory||[]);
@@ -231,19 +156,6 @@ function draw(j){
  renderBattleHistory(j.dailyHistory||[]);
  renderHourly(j.hourlyHistory||[]);
 }
-
-function renderUploadStat(id,x,metric){
- if(!x){$(id).textContent='Waiting for snapshot data…';return;}
- const value=metric==='views'?fmt(x.views)+' views':metric==='likes'?fmt(x.likes)+' likes':metric==='growthPerHour'?fmtRate(x.growthPerHour)+' views/hour':x.publishedAt?new Date(x.publishedAt).toLocaleDateString():'';
- $(id).innerHTML='<a href="'+x.url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><img class="statThumb" src="'+x.thumbnail+'" alt="">'+escapeHtml(x.title)+' <span class="small">('+value+')</span></a>';
-}
-function renderGrowth(rows){
- const data=rows.slice(-24);
- if(!data.length){$('growthGraph').innerHTML='<div class="small">No growth history yet.</div>';return;}
- const max=Math.max(1,...data.flatMap(x=>[x.team1Views,x.team2Views]));
- $('growthGraph').innerHTML=data.map(x=>'<div class="chartRow"><span>'+new Date(x.capturedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'</span><div class="chartBars"><div class="chartBar" title="TADC: '+fmt(x.team1Views)+'" style="width:'+(x.team1Views/max*100)+'%"></div><div class="chartBar" title="FNAF: '+fmt(x.team2Views)+'" style="width:'+(x.team2Views/max*100)+'%"></div></div><strong>'+fmt(Math.max(x.team1Views,x.team2Views))+'</strong></div>').join('');
-}
-
 function fmtRate(n){return Number(n||0).toFixed(2)}
 function formatHours(h){h=Number(h||0);if(h<1)return Math.round(h*60)+'m';if(h<24)return h.toFixed(1)+'h';return (h/24).toFixed(1)+'d'}
 function renderDaily(rows){
@@ -282,4 +194,4 @@ async function loadContent(){
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 refresh();loadContent();setInterval(refresh,60000);setInterval(loadContent,300000);
 </script>
-<script>(function(){const halloween=new Date('2026-10-31T23:59:59-05:00');const msgs=['🎃 Someone is creeping up on the scoreboard!','👻 Boo! Check the latest uploads.','🦇 The bats are watching the subscriber gap.','🕸️ The scoreboard web is getting bigger.','🎃 Spooky season = Shorts season.','👻 A new lead could appear at any moment!'];let cache=[],filter='all',sound=false,ctx;const q=id=>document.getElementById(id),show=(id)=>{document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x.dataset.page===id));q(id)?.classList.add('active');history.replaceState(null,'','#'+id)};function toast(m){let t=q('toast');if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t)}t.textContent=m;clearTimeout(window._t);window._t=setTimeout(()=>t.remove(),2500)}function tick(){let ms=Math.max(0,halloween-Date.now()),s=Math.floor(ms/1000),d=Math.floor(s/86400);s%=86400;let h=Math.floor(s/3600);s%=3600;let m=Math.floor(s/60);s%=60;q('halloweenTimer').textContent=d+'d '+String(h).padStart(2,'0')+'h '+String(m).padStart(2,'0')+'m '+String(s).padStart(2,'0')+'s';q('daysHalloween').textContent='Days until Halloween: '+d;q('halloweenFill').style.width=Math.min(100,Math.max(0,(37*86400-ms)/(37*86400)*100))+'%'}setInterval(tick,1000);tick();q('spookyMessage').textContent=msgs[Math.floor(Math.random()*msgs.length)];document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>show(b.dataset.page));if(location.hash&&q(location.hash.slice(1)))show(location.hash.slice(1));q('themeBtn').onclick=()=>{document.body.classList.toggle('light');localStorage.setItem('battleTheme',document.body.classList.contains('light')?'light':'dark');q('themeBtn').textContent=document.body.classList.contains('light')?'☀️ Dark mode':'🌙 Light mode'};if(localStorage.getItem('battleTheme')==='light'){document.body.classList.add('light');q('themeBtn').textContent='☀️ Dark mode'}q('refreshBtn').onclick=()=>{refresh();loadContent();toast('🔄 Refreshed!')};q('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);toast('📋 Link copied!')}catch(e){toast('Copy unavailable')}};q('shareBtn').onclick=async()=>{if(navigator.share)await navigator.share({title:'Halloween Subscriber Battle',url:location.href});else{await navigator.clipboard.writeText(location.href);toast('🔗 Link copied!')}};q('fullBtn').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()};q('soundBtn').onclick=()=>{sound=!sound;q('soundBtn').textContent=sound?'🔊 Spooky sounds':'🔇 Spooky sounds';if(sound){ctx=ctx||new(window.AudioContext||window.webkitAudioContext)();let o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=220;g.gain.value=.03;o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.15)}};function spawn(){let e=document.createElement('div');e.className='particle';e.textContent=['🎃','👻','🦇','🍬'][Math.floor(Math.random()*4)];e.style.left=Math.random()*100+'%';e.style.animationDuration=(7+Math.random()*8)+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),16000)}setInterval(spawn,1800);for(let i=0;i<4;i++)setTimeout(spawn,i*400);function render(){let s=(q('contentSearch')?.value||'').toLowerCase(),sort=q('contentSort')?.value||'newest',rows=cache.filter(x=>(filter==='all'||x.type===filter||x.team===filter)&&String(x.title).toLowerCase().includes(s));rows.sort((a,b)=>sort==='views'?b.views-a.views:sort==='likes'?b.likes-a.likes:new Date(b.publishedAt)-new Date(a.publishedAt));q('contentExplorer').innerHTML=rows.length?rows.map(x=>'<article class="contentItem"><a href="'+x.url+'" target="_blank" rel="noopener"><img loading="lazy" src="'+x.thumbnail+'" alt=""><div class="contentBody"><div class="contentTeam">'+x.team+' • '+x.type+'</div><div class="contentTitle">'+escapeHtml(x.title)+'</div><div class="contentMeta">👁️ '+fmt(x.views)+' • 👍 '+fmt(x.likes)+' • 💬 '+fmt(x.comments)+'<br>'+new Date(x.publishedAt).toLocaleString()+'</div><div class="controlBtn" style="display:inline-block;margin-top:9px">▶ Watch now</div></div></a></article>').join(''):'<div class="small">No uploads match that filter.</div>'}window.renderExplorer=rows=>{cache=rows||[];render()};document.querySelectorAll('.filterBtn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filterBtn').forEach(x=>x.classList.remove('active'));b.classList.add('active');filter=b.dataset.filter;render()});q('contentSearch').oninput=render;q('contentSort').onchange=render;window.updateExtra=j=>{let t=j.teams||[];q('teamTadcLink').href=t[0]?.channelUrl||'#';q('teamFnafLink').href=t[1]?.channelUrl||'#';q('pageLeader').textContent=j.battle?.currentLeader||'—';q('pageGap').textContent=fmt(j.battle?.liveDifference);q('pageProgress').textContent=Number(j.battle?.progressPercent||0).toFixed(1)+'%';q('pageUploads').textContent=fmt(j.stats?.totalUploadsDuringBattle);q('battleTimeline').innerHTML='<div class="timelineItem"><strong>🎃 Battle start</strong><br><span class="small">'+new Date(j.start).toLocaleString()+'</span></div>'+(j.hourlyHistory||[]).slice(-12).reverse().map(x=>'<div class="timelineItem"><strong>🕐 Snapshot</strong><br><span class="small">'+new Date(x.hour).toLocaleString()+' — TADC '+fmt(x.team1Subscribers)+' / FNAF '+fmt(x.team2Subscribers)+'</span></div>').join('')};const oldDraw=window.draw;window.draw=function(j){oldDraw(j);window.renderExplorer(j.content||[]);window.updateExtra(j)};q('spookyLoad').classList.add('hide');})();</script><script>(function(){const oldExtra=window.updateExtra;window.updateExtra=function(j){oldExtra(j);const card=x=>'<article class="contentItem"><a href="'+x.url+'" target="_blank" rel="noopener"><img loading="lazy" src="'+x.thumbnail+'" alt=""><div class="contentBody"><div class="contentTeam">'+x.team+' • '+x.type+'</div><div class="contentTitle">'+escapeHtml(x.title)+'</div><div class="contentMeta">👁️ '+fmt(x.views)+' • 👍 '+fmt(x.likes)+' • 💬 '+fmt(x.comments)+'</div><div class="controlBtn" style="display:inline-block;margin-top:9px">▶ Watch now</div></div></a></article>';const rows=j.content||[];q('shortsPageGrid').innerHTML=rows.filter(x=>x.type==='Short').slice(0,4).map(card).join('')||'<div class="small">No Shorts found.</div>';q('videosPageGrid').innerHTML=rows.filter(x=>x.type==='Video').slice(0,4).map(card).join('')||'<div class="small">No videos found.</div>';const prev=localStorage.getItem('lastBattleLeader');const cur=j.battle?.currentLeader;if(cur&&prev&&prev!==cur&&cur!=='TIE')toast('👑 New leader: '+cur);if(cur)localStorage.setItem('lastBattleLeader',cur);const milestones=[10,25,50,100,250,500,1000,2500,5000,10000];const total=Number(j.battle?.gains?.total||0),old=Number(localStorage.getItem('lastBattleMilestone')||0),hit=milestones.filter(m=>m<=total).pop()||0;if(hit>old&&hit){localStorage.setItem('lastBattleMilestone',String(hit));toast('🎉 Milestone reached: +'+fmt(hit)+' total subscribers gained!');for(let i=0;i<20;i++){let c=document.createElement('div');c.className='confetti';c.textContent=['🎃','🎉','👻','🦇'][i%4];c.style.setProperty('--x',(Math.random()*500-250)+'px');c.style.setProperty('--y',(Math.random()*400-200)+'px');document.body.appendChild(c);setTimeout(()=>c.remove(),1400)}}};})();</script></body></html>
+</body></html>
