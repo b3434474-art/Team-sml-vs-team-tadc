@@ -1,0 +1,48 @@
+name: Sync YouTube Community Posts
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync-community-posts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run community-post sync
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TADC_CHANNEL_ID: ${{ secrets.TADC_CHANNEL_ID }}
+          FNAF_CHANNEL_ID: ${{ secrets.FNAF_CHANNEL_ID }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+          import urllib.request
+
+          required = [
+              "SUPABASE_URL",
+              "SUPABASE_SERVICE_ROLE_KEY",
+              "TADC_CHANNEL_ID",
+              "FNAF_CHANNEL_ID",
+              "YOUTUBE_API_KEY",
+          ]
+          missing = [name for name in required if not os.environ.get(name)]
+          if missing:
+              print("Community-post sync is not active yet.")
+              print("Missing GitHub Actions secrets:", ", ".join(missing))
+              print("The database and scheduled workflow are ready; a supported Community Posts source still needs to be connected.")
+              sys.exit(0)
+
+          print("All sync configuration is present.")
+          print("The YouTube Data API does not currently expose Community Posts through the API endpoint used by this project.")
+          print("No posts were imported. This workflow is intentionally non-destructive until a supported post source is connected.")
+          PY
