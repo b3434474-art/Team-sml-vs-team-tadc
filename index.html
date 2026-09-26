@@ -44,15 +44,6 @@ const SCOREBOARD='https://bggcalimggvaknurfhgb.supabase.co/functions/v1/battle-s
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n||0).toLocaleString();
 
-function renderTimer(){
- const now=new Date();let d,label;
- if(now<START){d=START-now;label='Battle starts September 25 at 7:00 PM';}
- else if(now<END){d=END-now;label='Time remaining until Halloween';}
- else{d=0;label='The battle is over! Final totals are shown above.'}
- const s=Math.max(0,Math.floor(d/1000)),days=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60),sec=s%60;
- $('timer').textContent=(days?days+'d ':'')+String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
- $('timerLabel').textContent=label;
-}
 async function refresh(){
  try{
   const r=await fetch(SCOREBOARD,{cache:'no-store'});
@@ -97,6 +88,6 @@ async function loadContent(){
  }catch(e){ $('content').innerHTML='<div class="small error">Latest uploads are temporarily unavailable.</div>'; }
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-renderTimer();refresh();loadContent();setInterval(renderTimer,1000);setInterval(refresh,60000);setInterval(loadContent,300000);
+refresh();loadContent();setInterval(refresh,60000);setInterval(loadContent,300000);
 </script>
 </body></html>
