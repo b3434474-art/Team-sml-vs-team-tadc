@@ -34,7 +34,9 @@
 @media(max-width:700px){.statGrid{grid-template-columns:1fr 1fr}.chartRow{grid-template-columns:58px 1fr 35px}}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.subs{font-size:42px}}
 
-.sectionTitle{font-size:24px;font-weight:800;margin-bottom:14px}.contentGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contentItem{background:#ffffff08;border:1px solid var(--line);border-radius:16px;overflow:hidden}.contentItem img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}.contentBody{padding:12px}.contentTeam{font-size:12px;color:var(--muted);text-transform:uppercase}.contentTitle{font-weight:750;margin:5px 0 8px;line-height:1.25}.contentDate{font-size:12px;color:var(--muted)}.contentItem a{color:inherit;text-decoration:none}@media(max-width:700px){.contentGrid{grid-template-columns:1fr}}
+.sectionTitle{font-size:24px;font-weight:800;margin-bottom:14px}
+.communityGrid{display:grid;gap:14px}.communityItem{background:#ffffff08;border:1px solid var(--line);border-radius:16px;padding:15px}.communityMeta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}.communityTeam{font-weight:800;color:var(--text)}.communityText{white-space:pre-wrap;line-height:1.45;margin:10px 0}.communityLink{display:inline-block;color:var(--pink);font-weight:700;text-decoration:none}.emptyState{color:var(--muted);padding:6px 0}
+.contentGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contentItem{background:#ffffff08;border:1px solid var(--line);border-radius:16px;overflow:hidden}.contentItem img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}.contentBody{padding:12px}.contentTeam{font-size:12px;color:var(--muted);text-transform:uppercase}.contentTitle{font-weight:750;margin:5px 0 8px;line-height:1.25}.contentDate{font-size:12px;color:var(--muted)}.contentItem a{color:inherit;text-decoration:none}@media(max-width:700px){.contentGrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -82,6 +84,12 @@
 <section class="card">
   <div class="statsTitle">🕐 Hourly scoreboard snapshots</div>
   <div id="hourlyHistory" class="history"><div class="small">Collecting hourly snapshots…</div></div>
+</section>
+
+<section class="card">
+  <div class="sectionTitle">📣 Latest Community Posts</div>
+  <div id="communityPosts" class="communityGrid"><div class="small">Loading community posts…</div></div>
+  <div class="small" style="margin-top:12px">Posts appear here after they are added to the battle database.</div>
 </section>
 <section class="card">
   <div class="sectionTitle">🎬 Latest videos & Shorts</div>
@@ -191,7 +199,18 @@ async function loadContent(){
   $('content').innerHTML=items.length?items.map(x=>'<article class="contentItem"><a href="'+x.url+'" target="_blank" rel="noopener"><img loading="lazy" src="'+x.thumbnail+'" alt=""><div class="contentBody"><div class="contentTeam">'+x.team+' • '+x.type+'</div><div class="contentTitle">'+escapeHtml(x.title)+'</div><div class="contentDate">'+new Date(x.publishedAt).toLocaleDateString()+'</div></div></a></article>').join(''):'<div class="small">No public uploads found yet.</div>';
  }catch(e){ $('content').innerHTML='<div class="small error">Latest uploads are temporarily unavailable.</div>'; }
 }
+
+async function loadCommunityPosts(){
+ try{
+  const url='https://bggcalimggvaknurfhgb.supabase.co/rest/v1/youtube_community_posts?select=post_id,team,content,published_at,post_url,author_name&order=published_at.desc&limit=10';
+  const r=await fetch(url,{headers:{apikey:'sb_publishable_jIY0v3NJYZAY6t4avqTcWg_H4yjcuPE',Accept:'application/json'},cache:'no-store'});
+  const rows=await r.json();
+  if(!r.ok)throw new Error('Community posts unavailable');
+  $('communityPosts').innerHTML=rows.length?rows.map(x=>'<article class="communityItem"><div class="communityMeta"><span class="communityTeam">'+escapeHtml(x.team||'Team')+'</span><span>'+formatCommunityDate(x.published_at)+'</span></div><div class="communityText">'+escapeHtml(x.content||'')+'</div>'+(x.post_url?'<a class="communityLink" href="'+escapeHtml(x.post_url)+'" target="_blank" rel="noopener">View post on YouTube ↗</a>':'')+'</article>').join(''):'<div class="emptyState">No community posts have been added yet.</div>';
+ }catch(e){ $('communityPosts').innerHTML='<div class="small error">Community posts are temporarily unavailable.</div>'; }
+}
+function formatCommunityDate(value){if(!value)return 'Date unknown';const d=new Date(value);return Number.isNaN(d.getTime())?'Date unknown':d.toLocaleString([], {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-refresh();loadContent();setInterval(refresh,60000);setInterval(loadContent,300000);
+refresh();loadContent();loadCommunityPosts();setInterval(refresh,60000);setInterval(loadContent,300000);setInterval(loadCommunityPosts,300000);
 </script>
 </body></html>
