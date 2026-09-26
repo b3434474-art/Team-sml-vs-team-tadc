@@ -29,7 +29,7 @@
 .chartBar{min-width:2px;border-radius:4px;background:linear-gradient(90deg,var(--orange),var(--pink))}
 .history{display:grid;gap:7px;max-height:330px;overflow:auto}
 .historyRow{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:9px 10px;background:#ffffff08;border-radius:10px;font-size:12px}
-.historyRow strong{font-size:13px}
+.historyRow strong{font-size:13px}.stats20{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.statWide{grid-column:span 2}.statValueSmall{font-size:18px;font-weight:800;margin-top:5px;line-height:1.25}.statThumb{width:56px;height:32px;object-fit:cover;border-radius:6px;vertical-align:middle;margin-right:7px}@media(max-width:900px){.stats20{grid-template-columns:repeat(2,minmax(0,1fr))}.statWide{grid-column:span 2}}@media(max-width:600px){.stats20{grid-template-columns:1fr}.statWide{grid-column:span 1}}
 @media(max-width:900px){.statGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.statGrid{grid-template-columns:1fr 1fr}.chartRow{grid-template-columns:58px 1fr 35px}}
 @media(max-width:700px){.grid{grid-template-columns:1fr}.subs{font-size:42px}}
@@ -65,6 +65,39 @@
     <div class="stat"><div class="statLabel">Gain per hour</div><div class="statValue" id="perHour">—</div><div class="statSub">TADC • FNAF</div></div>
     <div class="stat"><div class="statLabel">Highest single-day gain</div><div class="statValue" id="highestDay">—</div></div>
     <div class="stat"><div class="statLabel">Highest single-hour gain</div><div class="statValue" id="highestHour">—</div></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="statsTitle">📊 Channel & Content Stats</div>
+  <div class="small" style="margin-bottom:12px">Live YouTube stats collected automatically. Historical “today” and growth metrics become more accurate as snapshots accumulate.</div>
+  <div class="stats20">
+    <div class="stat"><div class="statLabel">TADC total views</div><div class="statValue" id="tadcViews">—</div></div>
+    <div class="stat"><div class="statLabel">FNAF total views</div><div class="statValue" id="fnafViews">—</div></div>
+    <div class="stat"><div class="statLabel">TADC Shorts uploaded</div><div class="statValue" id="tadcShorts">—</div></div>
+    <div class="stat"><div class="statLabel">FNAF Shorts uploaded</div><div class="statValue" id="fnafShorts">—</div></div>
+    <div class="stat"><div class="statLabel">TADC videos uploaded</div><div class="statValue" id="tadcVideos">—</div></div>
+    <div class="stat"><div class="statLabel">FNAF videos uploaded</div><div class="statValue" id="fnafVideos">—</div></div>
+    <div class="stat"><div class="statLabel">TADC average views/upload</div><div class="statValue" id="tadcAvgViews">—</div></div>
+    <div class="stat"><div class="statLabel">FNAF average views/upload</div><div class="statValue" id="fnafAvgViews">—</div></div>
+    <div class="stat statWide"><div class="statLabel">Most-viewed upload</div><div class="statValueSmall" id="mostViewedUpload">—</div></div>
+    <div class="stat statWide"><div class="statLabel">Most-liked upload</div><div class="statValueSmall" id="mostLikedUpload">—</div></div>
+    <div class="stat statWide"><div class="statLabel">Most recent upload</div><div class="statValueSmall" id="mostRecentUpload">—</div></div>
+    <div class="stat statWide"><div class="statLabel">Fastest-growing upload</div><div class="statValueSmall" id="fastestGrowingUpload">—</div></div>
+    <div class="stat"><div class="statLabel">TADC subscriber-to-view</div><div class="statValue" id="tadcSubView">—</div><div class="statSub">% of views</div></div>
+    <div class="stat"><div class="statLabel">FNAF subscriber-to-view</div><div class="statValue" id="fnafSubView">—</div><div class="statSub">% of views</div></div>
+    <div class="stat"><div class="statLabel">TADC total likes</div><div class="statValue" id="tadcLikes">—</div></div>
+    <div class="stat"><div class="statLabel">FNAF total likes</div><div class="statValue" id="fnafLikes">—</div></div>
+    <div class="stat"><div class="statLabel">TADC total comments</div><div class="statValue" id="tadcComments">—</div></div>
+    <div class="stat"><div class="statLabel">FNAF total comments</div><div class="statValue" id="fnafComments">—</div></div>
+    <div class="stat"><div class="statLabel">Uploads during battle</div><div class="statValue" id="battleUploads">—</div></div>
+    <div class="stat"><div class="statLabel">Average upload frequency</div><div class="statValueSmall" id="uploadFrequency">—</div><div class="statSub">uploads/day • TADC / FNAF</div></div>
+    <div class="stat"><div class="statLabel">Views gained today</div><div class="statValueSmall" id="viewsToday">—</div><div class="statSub">TADC / FNAF</div></div>
+    <div class="stat"><div class="statLabel">Likes gained today</div><div class="statValueSmall" id="likesToday">—</div><div class="statSub">TADC / FNAF</div></div>
+    <div class="stat"><div class="statLabel">Comments gained today</div><div class="statValueSmall" id="commentsToday">—</div><div class="statSub">TADC / FNAF</div></div>
+    <div class="stat"><div class="statLabel">Subscribers gained today</div><div class="statValueSmall" id="subsToday">—</div><div class="statSub">TADC / FNAF</div></div>
+    <div class="stat"><div class="statLabel">Views per subscriber</div><div class="statValueSmall" id="viewsPerSub">—</div><div class="statSub">TADC / FNAF</div></div>
+    <div class="stat statWide"><div class="statLabel">Growth history graph</div><div id="growthGraph" class="chart"><div class="small">Collecting snapshots…</div></div></div>
   </div>
 </section>
 <section class="card">
@@ -149,6 +182,33 @@ function draw(j){
  $('perHour').textContent=fmtRate(b.subscribersPerHour?.team1)+' / '+fmtRate(b.subscribersPerHour?.team2);
  $('highestDay').textContent=fmt(b.highestSingleDayGain);
  $('highestHour').textContent=fmt(b.highestSingleHourGain);
+ const s=j.stats||{};
+ $('tadcViews').textContent=fmt(s.totalViews?.team1);
+ $('fnafViews').textContent=fmt(s.totalViews?.team2);
+ $('tadcShorts').textContent=fmt(s.shortsUploaded?.team1);
+ $('fnafShorts').textContent=fmt(s.shortsUploaded?.team2);
+ $('tadcVideos').textContent=fmt(s.videosUploaded?.team1);
+ $('fnafVideos').textContent=fmt(s.videosUploaded?.team2);
+ $('tadcAvgViews').textContent=fmt(s.averageViewsPerUpload?.team1);
+ $('fnafAvgViews').textContent=fmt(s.averageViewsPerUpload?.team2);
+ $('tadcSubView').textContent=Number(s.subscriberToViewRatio?.team1||0).toFixed(4)+'%';
+ $('fnafSubView').textContent=Number(s.subscriberToViewRatio?.team2||0).toFixed(4)+'%';
+ $('tadcLikes').textContent=fmt(s.totalLikes?.team1);
+ $('fnafLikes').textContent=fmt(s.totalLikes?.team2);
+ $('tadcComments').textContent=fmt(s.totalComments?.team1);
+ $('fnafComments').textContent=fmt(s.totalComments?.team2);
+ $('battleUploads').textContent=fmt(s.totalUploadsDuringBattle);
+ $('uploadFrequency').textContent=fmtRate(s.averageUploadFrequency?.team1)+' / '+fmtRate(s.averageUploadFrequency?.team2);
+ $('viewsToday').textContent=fmt(s.viewsGainedToday?.team1)+' / '+fmt(s.viewsGainedToday?.team2);
+ $('likesToday').textContent=fmt(s.likesGainedToday?.team1)+' / '+fmt(s.likesGainedToday?.team2);
+ $('commentsToday').textContent=fmt(s.commentsGainedToday?.team1)+' / '+fmt(s.commentsGainedToday?.team2);
+ $('subsToday').textContent=fmt(s.subscribersGainedToday?.team1)+' / '+fmt(s.subscribersGainedToday?.team2);
+ $('viewsPerSub').textContent=fmtRate(s.viewsPerSubscriber?.team1)+' / '+fmtRate(s.viewsPerSubscriber?.team2);
+ renderUploadStat('mostViewedUpload',s.mostViewedUpload,'views');
+ renderUploadStat('mostLikedUpload',s.mostLikedUpload,'likes');
+ renderUploadStat('mostRecentUpload',s.mostRecentUpload,'');
+ renderUploadStat('fastestGrowingUpload',s.fastestGrowingUpload,'growthPerHour');
+ renderGrowth(s.growthHistory||[]);
  $('progressText').textContent=Number(b.progressPercent||0).toFixed(1)+'%';
  $('progressFill').style.width=Math.min(100,Math.max(0,Number(b.progressPercent||0)))+'%';
  renderDaily(j.dailyHistory||[]);
@@ -156,6 +216,19 @@ function draw(j){
  renderBattleHistory(j.dailyHistory||[]);
  renderHourly(j.hourlyHistory||[]);
 }
+
+function renderUploadStat(id,x,metric){
+ if(!x){$(id).textContent='Waiting for snapshot data…';return;}
+ const value=metric==='views'?fmt(x.views)+' views':metric==='likes'?fmt(x.likes)+' likes':metric==='growthPerHour'?fmtRate(x.growthPerHour)+' views/hour':x.publishedAt?new Date(x.publishedAt).toLocaleDateString():'';
+ $(id).innerHTML='<a href="'+x.url+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><img class="statThumb" src="'+x.thumbnail+'" alt="">'+escapeHtml(x.title)+' <span class="small">('+value+')</span></a>';
+}
+function renderGrowth(rows){
+ const data=rows.slice(-24);
+ if(!data.length){$('growthGraph').innerHTML='<div class="small">No growth history yet.</div>';return;}
+ const max=Math.max(1,...data.flatMap(x=>[x.team1Views,x.team2Views]));
+ $('growthGraph').innerHTML=data.map(x=>'<div class="chartRow"><span>'+new Date(x.capturedAt).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'</span><div class="chartBars"><div class="chartBar" title="TADC: '+fmt(x.team1Views)+'" style="width:'+(x.team1Views/max*100)+'%"></div><div class="chartBar" title="FNAF: '+fmt(x.team2Views)+'" style="width:'+(x.team2Views/max*100)+'%"></div></div><strong>'+fmt(Math.max(x.team1Views,x.team2Views))+'</strong></div>').join('');
+}
+
 function fmtRate(n){return Number(n||0).toFixed(2)}
 function formatHours(h){h=Number(h||0);if(h<1)return Math.round(h*60)+'m';if(h<24)return h.toFixed(1)+'h';return (h/24).toFixed(1)+'d'}
 function renderDaily(rows){
